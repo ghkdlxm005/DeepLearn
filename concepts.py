@@ -309,3 +309,36 @@ LINK.update({
 # 기존 개념에 3장 노트북 연결 추가
 for _k in ["신경망 · 뉴런 · 층", "원-핫 인코딩"]:
     LINK[_k]["nb"] = LINK[_k]["nb"] + [("ch3", "필기체 숫자 인식")]
+
+# ---------------- 평가 지표 · 하이퍼파라미터 탐색 (작년 시험 서술·실습 유형)
+C += [
+("혼동 행렬 (Confusion Matrix)", "confusion matrix 혼동행렬 오차행렬 TP FP FN TN",
+ "실제 정답과 예측을 표로 정리한 것. 이진 분류에서 TP(양성을 양성으로), FP(음성을 양성으로 잘못), FN(양성을 음성으로 잘못), TN(음성을 음성으로)의 네 칸.",
+ "스팸 필터: 스팸을 스팸으로 거름(TP), 정상 메일을 스팸으로 잘못 거름(FP), 스팸을 놓침(FN), 정상 메일을 통과시킴(TN).",
+ "<code>confusion_matrix(y_test, y_pred)</code> (행: 실제, 열: 예측) / <code>ConfusionMatrixDisplay.from_predictions(...)</code>",
+ "다중 분류에서는 대각선이 맞힌 개수, 대각선 밖이 어떤 클래스끼리 헷갈렸는지. Fashion MNIST에서는 Shirt를 T-shirt·Coat·Pullover와 많이 헷갈림."),
+
+("정밀도 · 재현율 · F1 Score", "precision recall f1 정밀도 재현율 f1score 조화평균 평가지표",
+ "<b>정밀도</b> = TP / (TP + FP): 양성이라고 예측한 것 중 실제 양성 비율. <b>재현율</b> = TP / (TP + FN): 실제 양성 중 모델이 찾아낸 비율. <b>F1</b> = 2 × 정밀도 × 재현율 / (정밀도 + 재현율): 둘의 조화 평균.",
+ "그물로 물고기 잡기: 정밀도는 잡은 것 중 물고기 비율(쓰레기를 덜 건짐), 재현율은 연못의 물고기 중 잡은 비율(놓치지 않음).",
+ "<code>precision_score / recall_score / f1_score(y_test, y_pred, average=\"macro\")</code>, <code>classification_report</code>",
+ "정밀도와 재현율은 트레이드오프(임곗값을 올리면 정밀도↑ 재현율↓). F1은 둘 중 하나만 높으면 낮게 나와서 균형을 봄. 클래스가 불균형하면 정확도보다 F1이 더 의미 있음."),
+
+("ROC 곡선 · AUC", "roc auc curve fpr tpr 특이도 재현율 곡선 아래 면적",
+ "<b>ROC</b>: 분류 임곗값을 바꿔 가며 FPR(= FP / (FP + TN), 음성을 양성으로 잘못 본 비율)에 따라 TPR(= 재현율)이 어떻게 변하는지 그린 곡선. <b>AUC</b>: ROC 곡선 아래 면적.",
+ "합격선을 낮추면 진짜 합격자는 더 많이 붙지만(TPR↑) 떨어져야 할 사람도 붙음(FPR↑). 그 관계를 한 곡선으로 그린 것.",
+ "<code>fprs, tprs, thresholds = roc_curve(y_true, proba)</code>, <code>roc_auc_score(y_true, proba)</code> (proba = 양성일 확률)",
+ "AUC 1에 가까울수록 좋음(곡선이 왼쪽 위로 붙음), 0.5는 랜덤(대각선). 모델 여러 개를 AUC로 비교해 순위를 매길 수 있음. 다중 분류는 클래스 하나를 양성으로 정하거나 <code>multi_class=\"ovr\"</code>."),
+
+("하이퍼파라미터 탐색 (그리드 · 랜덤)", "hyperparameter 하이퍼파라미터 튜닝 tuning grid search random search gridsearchcv keras tuner 최적",
+ "학습으로 정해지지 않고 사람이 정하는 값(층 수, 뉴런 수, 학습률, 배치 크기 등)의 여러 조합을 시도해, 검증 성능이 가장 좋은 조합을 고르는 것. <b>그리드</b>: 모든 조합. <b>랜덤</b>: 범위 안에서 일부만 랜덤으로.",
+ "여러 레시피(불 세기·시간·양념)를 다 만들어 맛을 보고 가장 맛있는 조합을 고른 뒤, 그 레시피로 본 요리를 하는 것.",
+ "직접: <code>itertools.product</code>로 반복 → 결과 DataFrame 정렬 → 1등 조합으로 재학습. 도구: <code>keras_tuner.RandomSearch</code>, <code>GridSearchCV</code> + <code>scikeras.KerasClassifier</code>",
+ "고를 때는 검증 세트(또는 교차 검증) 점수를 쓰고 테스트 세트는 마지막에 한 번만. 조합 수 × epoch만큼 오래 걸리니 데이터·epoch를 줄여 탐색하고, 최적 조합으로 전체 데이터를 다시 학습."),
+]
+LINK.update({
+ "혼동 행렬 (Confusion Matrix)": dict(ex=["혼동 행렬 · 정밀도 · 재현율 · F1 (classification_report)"], nb=[], exp=[]),
+ "정밀도 · 재현율 · F1 Score": dict(ex=["혼동 행렬 · 정밀도 · 재현율 · F1 (classification_report)"], nb=[("ch5", "스트리밍 지표")], exp=[]),
+ "ROC 곡선 · AUC": dict(ex=["ROC 곡선 · AUC (모델 여러 개 비교)"], nb=[], exp=[]),
+ "하이퍼파라미터 탐색 (그리드 · 랜덤)": dict(ex=["그리드 탐색 직접 구현 (for 반복 → 결과 표 → 최적 선택)", "최적 하이퍼파라미터로 다시 학습"], nb=[], exp=[]),
+})

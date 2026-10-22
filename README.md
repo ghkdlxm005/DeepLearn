@@ -8,6 +8,8 @@
 |---|---|
 | `snippets.py` | 내용 원본 (제목, 검색 키워드, 코드, 설명) — 2·3·4장 범위 |
 | `snippets_tf.py` | 5·6장(텐서플로 저수준·사용자 정의), 7장(CNN) 예제 |
+| `snippets_eval.py` | 하이퍼파라미터 탐색(그리드·Keras Tuner·GridSearchCV), 혼동 행렬·F1·ROC/AUC |
+| `mock_cards.py` | 모의시험 답안 노트북 → 문항별 카드 |
 | `concepts.py` | 개념 사전 (뜻·비유·코드 위치·바꾸면) + 개념별 예제·노트북·실험 연결(`LINK`) |
 | `experiments.py` | "바꾸면 이렇게 된다" 실험 그룹 정의와 결과 해석(`EXPL`) |
 | `results.json` | 실험 결과 (Fashion MNIST, 기준 모델에서 하나씩 바꿔 10 epoch) |

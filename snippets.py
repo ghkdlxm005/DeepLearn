@@ -14,6 +14,7 @@ SECTIONS = [
     ("tf", "텐서플로 기초"),
     ("custom", "사용자 정의"),
     ("cnn", "CNN"),
+    ("tune", "튜닝·평가"),
     ("pandas", "Pandas"),
     ("numpy", "NumPy 신경망"),
     ("error", "에러 해결"),
@@ -591,6 +592,8 @@ html="""<table>
 # ---------------- 5·6·7장 예제
 import snippets_tf as _tf
 _tf.register(add)
+import snippets_eval as _ev
+_ev.register(add)
 
 # ---------------- Pandas 출력 예시 (Salary2024.csv 실제 실행 결과)
 import json as _json, os as _os
