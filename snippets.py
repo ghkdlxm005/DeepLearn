@@ -3,6 +3,7 @@
 
 SECTIONS = [
     ("concept", "개념 + 예제"),
+    ("fill", "빈칸 채우기"),
     ("change", "바꾸면 이렇게 된다"),
     ("mock", "모의시험 답안"),
     ("notebook", "교수님 노트북"),
@@ -594,6 +595,8 @@ import snippets_tf as _tf
 _tf.register(add)
 import snippets_eval as _ev
 _ev.register(add)
+import snippets_fill as _fill
+_fill.register(add)
 
 # ---------------- Pandas 출력 예시 (Salary2024.csv 실제 실행 결과)
 import json as _json, os as _os

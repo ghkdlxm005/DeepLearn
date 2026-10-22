@@ -342,3 +342,12 @@ LINK.update({
  "ROC 곡선 · AUC": dict(ex=["ROC 곡선 · AUC (모델 여러 개 비교)"], nb=[], exp=[]),
  "하이퍼파라미터 탐색 (그리드 · 랜덤)": dict(ex=["그리드 탐색 직접 구현 (for 반복 → 결과 표 → 최적 선택)", "최적 하이퍼파라미터로 다시 학습"], nb=[], exp=[]),
 })
+
+C += [
+("변수 앞의 * · ** (묶기 · 풀기)", "별표 asterisk * ** args kwargs 언패킹 unpacking packing 가변인자 딕셔너리 풀기 교수님",
+ "변수·인자 이름 <b>앞</b>에 붙는 *, ** 는 곱하기가 아니라 여러 값을 <b>묶거나 푸는</b> 표시. 함수를 <b>정의</b>할 때 <code>*args</code>는 위치 인자 여러 개를 튜플로, <code>**kwargs</code>는 이름=값 인자를 딕셔너리로 모음. 함수를 <b>호출</b>할 때 <code>f(*리스트)</code>는 리스트를 낱개 인자로, <code>f(**딕셔너리)</code>는 키=값 인자로 풀어서 넣음.",
+ "*args = 짐을 한 상자에 몰아 담기, 호출할 때 * = 상자를 열어 하나씩 꺼내 주기. ** 는 이름표 붙은 짐(딕셔너리)으로 같은 일을 하는 것.",
+ "교수님 노트북: <code>def hi(*Names)</code>, <code>def hi3(**Names)</code>, <code>def wrapper(*args, **kwargs)</code> + <code>func(*args, **kwargs)</code>, <code>def __init__(self, units, **kwargs): super().__init__(**kwargs)</code>, <code>return {**base_config, \"threshold\": self.threshold}</code>, <code>fmt.format(*params)</code>, <code>def plot_loss(*args, figsize=(10,5))</code>",
+ "<ul><li><code>*args</code>는 튜플, <code>**kwargs</code>는 딕셔너리로 들어옴</li><li>사용자 정의 층·손실에서 <code>**kwargs</code>를 부모에게 넘겨야 name·dtype 같은 케라스 기본 인자가 동작함</li><li><code>{**a, \"키\": 값}</code> = 딕셔너리 a를 펼쳐 새 딕셔너리에 합치기 (get_config에서 사용)</li><li><code>*args</code> 뒤에 오는 인자(예: figsize)는 이름으로만 넘길 수 있음</li><li>이름 args·kwargs는 관례일 뿐, *Names 처럼 아무 이름이나 가능</li><li>헷갈리지 말 것: <code>a * b</code> 곱하기, <code>x ** 2</code> 거듭제곱, <code>X @ W</code> 행렬곱</li></ul>"),
+]
+LINK["변수 앞의 * · ** (묶기 · 풀기)"] = dict(ex=["변수 앞의 * · ** (교수님 노트북에 나온 곳 전부)"], nb=[("ch6", "arguments and key word arguments"), ("ch6", "Python Decorator")], exp=[])
