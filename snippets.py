@@ -4,6 +4,7 @@
 SECTIONS = [
     ("concept", "개념 + 예제"),
     ("change", "바꾸면 이렇게 된다"),
+    ("mock", "모의시험 답안"),
     ("notebook", "교수님 노트북"),
     ("start", "시작"),
     ("data", "데이터"),
@@ -42,14 +43,30 @@ add("start", "로컬 주피터에 텐서플로 설치", "install 설치 pip anac
 !pip install tensorflow""",
 "설치 후 Kernel → Restart. Colab은 이미 설치되어 있음.")
 
-add("start", "주피터 단축키", "shortcut 단축키 셀 추가 마크다운 실행 jupyter",
+add("start", "Colab 단축키", "shortcut 단축키 셀 추가 마크다운 실행 colab 코랩 jupyter 주피터",
 html="""<table>
-<tr><td><kbd>Shift</kbd>+<kbd>Enter</kbd></td><td>실행하고 다음 셀로</td></tr>
-<tr><td><kbd>Esc</kbd> → <kbd>A</kbd> / <kbd>B</kbd></td><td>위 / 아래에 셀 추가</td></tr>
-<tr><td><kbd>Esc</kbd> → <kbd>M</kbd> / <kbd>Y</kbd></td><td>마크다운 / 코드 셀로</td></tr>
-<tr><td><kbd>Esc</kbd> → <kbd>D</kbd> <kbd>D</kbd></td><td>셀 삭제</td></tr>
-<tr><td>Kernel → Restart &amp; Run All</td><td>제출 전 처음부터 다시 실행</td></tr>
+<tr><th>할 일</th><th>Colab</th><th>(참고) 주피터</th></tr>
+<tr><td>실행하고 다음 셀로</td><td><kbd>Shift</kbd>+<kbd>Enter</kbd></td><td>같음</td></tr>
+<tr><td>실행만 (그 자리)</td><td><kbd>Ctrl</kbd>+<kbd>Enter</kbd></td><td>같음</td></tr>
+<tr><td>아래에 코드 셀 추가</td><td><kbd>Ctrl</kbd>+<kbd>M</kbd> → <kbd>B</kbd></td><td><kbd>Esc</kbd> → <kbd>B</kbd></td></tr>
+<tr><td>위에 코드 셀 추가</td><td><kbd>Ctrl</kbd>+<kbd>M</kbd> → <kbd>A</kbd></td><td><kbd>Esc</kbd> → <kbd>A</kbd></td></tr>
+<tr><td>마크다운 셀로 바꾸기</td><td><kbd>Ctrl</kbd>+<kbd>M</kbd> → <kbd>M</kbd></td><td><kbd>Esc</kbd> → <kbd>M</kbd></td></tr>
+<tr><td>코드 셀로 바꾸기</td><td><kbd>Ctrl</kbd>+<kbd>M</kbd> → <kbd>Y</kbd></td><td><kbd>Esc</kbd> → <kbd>Y</kbd></td></tr>
+<tr><td>셀 삭제</td><td><kbd>Ctrl</kbd>+<kbd>M</kbd> → <kbd>D</kbd></td><td><kbd>Esc</kbd> → <kbd>D</kbd> <kbd>D</kbd></td></tr>
+<tr><td>실행 중단</td><td><kbd>Ctrl</kbd>+<kbd>M</kbd> → <kbd>I</kbd></td><td><kbd>Esc</kbd> → <kbd>I</kbd> <kbd>I</kbd></td></tr>
+<tr><td>처음부터 다시 실행</td><td>런타임 → 다시 시작 및 모두 실행</td><td>Kernel → Restart &amp; Run All</td></tr>
 </table>""")
+
+add("start", "Colab 시험 요령 (받은 노트북에 작성 → .ipynb 제출)", "colab 코랩 시험 제출 다운로드 ipynb gpu 런타임 업로드 content 드라이브 사본 gemini ai 끄기",
+html="""<ol>
+<li><b>열자마자 사본 저장</b>: 파일 → <b>Drive에 사본 저장</b>. 공유받은 원본은 저장이 안 될 수 있음. 작성 중에도 <kbd>Ctrl</kbd>+<kbd>S</kbd> 자주</li>
+<li><b>AI 기능 끄기 (AI 사용 금지 시험)</b>: Colab에는 Gemini 코드 자동완성·생성 기능이 들어 있음. 도구 → 설정 → <b>AI 지원</b>에서 AI 자동완성 표시 해제, 생성형 AI 기능 숨기기를 켜 두기 (메뉴 이름은 Colab 버전에 따라 조금 다를 수 있음). 회색 글씨로 코드가 저절로 제안되면 켜져 있는 것</li>
+<li><b>GPU (CNN이 느리면)</b>: 런타임 → 런타임 유형 변경 → <b>T4 GPU</b>. 바꾸면 런타임이 초기화되니 <b>시작할 때</b> 바꿀 것</li>
+<li><b>CSV 등 파일</b>: 왼쪽 📁 → 업로드 → 경로는 <code>/content/파일명</code>. 런타임이 끊기면 업로드한 파일도 사라짐</li>
+<li><b>오래 걸리는 셀</b>: <code>verbose=2</code>, epoch는 문제에 적힌 대로. 탭을 오래 비우면 런타임이 끊길 수 있음</li>
+<li><b>제출 전</b>: 런타임 → <b>다시 시작 및 모두 실행</b> → 에러 없이 끝까지 → 출력(정확도·그래프)이 보이는지 확인 → 파일 → <b>다운로드 → .ipynb 다운로드</b> → 파일 이름 확인 후 제출 (제출하면 끝)</li>
+<li><b>손글씨 그리기 셀</b>(<code>google.colab.output</code>)은 Colab에서는 그대로 동작</li>
+</ol>""")
 
 # ---------------- 데이터
 add("data", "MNIST 불러오기 · 정규화 · 검증 세트 분리", "mnist 숫자 손글씨 load_data 255 정규화 normalize validation 검증 split 나누기",
@@ -603,6 +620,7 @@ _NB = {"ch2": ("nb/ch2.html", "2. 케라스 신경망"), "ch3": ("nb/ch3.html", 
        "ch4": ("nb/ch4.html", "4. 신경망 요소"), "opt": ("nb/opt.html", "4. Optimizer(NumPy 역전파)"),
        "ch5": ("nb/ch5.html", "5. 사용자 정의 모델"), "ch6": ("nb/ch6.html", "6. 사용자 정의 모델 2"),
        "ch7a": ("nb/ch7a.html", "7-1. CNN 컴퓨터 비전"), "ch7b": ("nb/ch7b.html", "7-2. CNN 숫자")}
+import mock_cards as _mock
 _NB_DESC = {"ch2": "10장 · Fashion MNIST 시퀀셜 API, 함수형 API(와이드&딥), 저장·복원, 콜백",
             "ch3": "10장 복습 + MNIST 필기 숫자 인식, 내 손글씨 인식, 이미지 변환",
             "ch4": "11장 · 데이터 증강, 초기화, 활성화, 배치 정규화, 옵티마이저, 드롭아웃",
@@ -655,4 +673,4 @@ for _k, (_path, _name) in _NB.items():
         code="", note="", out="", extra="",
         html=f'<p>{_NB_DESC[_k]}</p><p><a href="{_path}" target="_blank" rel="noopener"><b>노트북 전체 열기 →</b></a></p>' + _t))
 for _x in S: _x.setdefault("extra", "")
-S[:0] = _front + _e.items(_R) + _nbitems
+S[:0] = _front + _e.items(_R) + _mock.items() + _nbitems

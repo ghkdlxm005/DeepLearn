@@ -80,6 +80,21 @@ print(tf.strings.length(b, unit="UTF8_CHAR"))  # 4
 p = tf.constant(["Café", "Coffee", "caffè", "咖啡"])
 print(tf.strings.unicode_decode(p, "UTF8"))    # 래그드 텐서로 나옴""")
 
+
+    # ---------------- 작년 같은 교수님 시험(머신러닝, 2025-1) Pandas 문항 유형
+    add("pandas", "작년 시험 유형: 직종별·연도별 연봉 집계 상위 10개", "작년 시험 기출 중간고사 직종별 연도별 상위 10개 groupby 두개 정렬 sort_values 2024년",
+"""df = pd.read_csv('/content/Salary2024.csv')        # Colab 업로드 경로
+
+# a. 직종별 연봉을 연도별로 각각 집계 → 평균 상위 10개
+a = df.groupby(['job_title', 'work_year'])['salary_in_usd'].agg(['min', 'max', 'mean'])
+a = a.sort_values(by='mean', ascending=False)      # ← 결과를 다시 저장해야 정렬이 반영됨
+a.head(10)
+
+# b. 2024년 직종 평균 상위 10개
+b = df[df['work_year'] == 2024]                     # ← 2024년만 먼저 거르기
+b.groupby('job_title')['salary_in_usd'].mean().sort_values(ascending=False).head(10)""",
+"작년 답안에서 자주 틀린 두 곳: ① sort_values()는 원본을 바꾸지 않음 → 변수에 다시 넣거나 이어서(.head) 써야 함 ② '2024년' 조건이 있으면 groupby 전에 df[df['work_year'] == 2024]로 거르기.")
+
     # ---------------- 사용자 정의 (5·6장)
     add("custom", "캘리포니아 주택 데이터 준비 (5·6장 공통)", "california housing 회귀 데이터 X_train_scaled StandardScaler 준비",
 """from sklearn.datasets import fetch_california_housing

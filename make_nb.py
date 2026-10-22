@@ -8,7 +8,8 @@ SRC = {"ch2": "2. 케라스를 사용한 인공 신경망 소개.ipynb",
        "ch5": "5.사용자_정의_모델.ipynb",
        "ch6": "6. 사용자 정의 모델 2.ipynb",
        "ch7a": "7-1. 합성곱 신경망을 사용한 컴퓨터 비전.ipynb",
-       "ch7b": "7-2. 합성곱 신경망-숫자.ipynb"}
+       "ch7b": "7-2. 합성곱 신경망-숫자.ipynb",
+       "mock": "모의중간고사_답안.ipynb", "mock_q": "모의중간고사_문제.ipynb"}
 os.makedirs("nb", exist_ok=True)
 ex = HTMLExporter(template_name="lab")
 ex.exclude_input_prompt = True; ex.exclude_output_prompt = True
