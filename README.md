@@ -11,6 +11,10 @@
 | `snippets_eval.py` | 하이퍼파라미터 탐색(그리드·Keras Tuner·GridSearchCV), 혼동 행렬·F1·ROC/AUC |
 | `mock_cards.py` | 모의시험 답안 노트북 → 문항별 카드 |
 | `snippets_fill.py` | 빈칸 채우기: 시험 노트북 주석 문장 → 코드 (교수님 노트북 변수 이름 그대로) + * · ** 예제 |
+| `snippets_lecture.py` | 교수님 강조: 수업 녹음(9/12~10/17) 전체에서 교수님이 강조·반복·질문한 내용을 주제별로 (질문→답 표, 주제 카드, 날짜별 요약) |
+| `snippets_hw.py` | 실제 과제 3개(Week3·Week4·6주차) 형식 정리, Week3 Pandas 변형 8문제(실행 결과 포함), 5·6·7장 함수 한 줄 설명 |
+| `snippets_practice.py`, `practice_results.json` | Week4 과제 형식의 변형 연습 10문제(답 코드·요점) + 실제 실행 결과 |
+| `snippets_nberr.py` | 교수님 노트북 8개를 실제로 실행해서 나온 에러: 메시지·원인·고친 코드·텍스트 박스 예시 |
 | `concepts.py` | 개념 사전 (뜻·비유·코드 위치·바꾸면) + 개념별 예제·노트북·실험 연결(`LINK`) |
 | `experiments.py` | "바꾸면 이렇게 된다" 실험 그룹 정의와 결과 해석(`EXPL`) |
 | `results.json` | 실험 결과 (Fashion MNIST, 기준 모델에서 하나씩 바꿔 10 epoch) |

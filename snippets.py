@@ -3,6 +3,9 @@
 
 SECTIONS = [
     ("concept", "개념 + 예제"),
+    ("lecture", "교수님 강조"),
+    ("practice", "과제 변형 연습"),
+    ("nberr", "노트북 에러 수정"),
     ("fill", "빈칸 채우기"),
     ("change", "바꾸면 이렇게 된다"),
     ("mock", "모의시험 답안"),
@@ -597,6 +600,17 @@ import snippets_eval as _ev
 _ev.register(add)
 import snippets_fill as _fill
 _fill.register(add)
+import snippets_lecture as _lec
+_lec.register(add)
+import snippets_nberr as _nberr
+_nberr.register(add)
+import snippets_hw as _hw
+_hw.register_head(add)
+_hw.register_pandas(add)
+import snippets_practice as _prac, json as _pj, os as _po
+_PR = _po.path.join(_po.path.dirname(_po.path.abspath(__file__)), "practice_results.json")
+_prac.register(add, _pj.load(open(_PR, encoding="utf-8")) if _po.path.exists(_PR) else None)
+_hw.register_explain(add)
 
 # ---------------- Pandas 출력 예시 (Salary2024.csv 실제 실행 결과)
 import json as _json, os as _os
