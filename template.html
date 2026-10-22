@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DL Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#f4f6f7; --surface:#fff; --fg:#17262e; --muted:#5a6b74; --line:#d8e0e4;
+  --accent:#0b6670; --accent-soft:#dff0f1; --code:#eef2f4; --mark:#ffe9a8; --mark-fg:#4d3600;
+  --f:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --m:"JetBrains Mono",Consolas,ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#10171b; --surface:#162026; --fg:#e2eaee; --muted:#93a3ac; --line:#29373e;
+  --accent:#5ec4cc; --accent-soft:#163439; --code:#0c1316; --mark:#56450f; --mark-fg:#ffe7a3; color-scheme:dark}}
+*{box-sizing:border-box}
+html{scroll-padding-top:150px}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f);font-size:15px;line-height:1.6}
+header{position:sticky;top:0;z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.hin{max-width:1040px;margin:0 auto;padding:14px 16px 10px}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+h1{font-size:1.15rem;margin:0;letter-spacing:-.01em;white-space:nowrap}
+h1 span{color:var(--accent)}
+#q{flex:1 1 260px;min-width:0;font:inherit;font-size:1rem;padding:9px 12px;border:1.5px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)}
+#q:focus{outline:none;border-color:var(--accent)}
+#count{font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+nav button{font:inherit;font-size:.82rem;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+nav button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+nav button:focus-visible,.copy:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+main{max-width:1040px;margin:0 auto;padding:16px 16px 80px}
+.sec{margin:22px 0 8px;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:10px;min-width:0}
+.card h2{font-size:1rem;margin:0 0 6px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.card h2 .tag{font-size:.7rem;font-weight:500;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:0 8px}
+.note{color:var(--muted);font-size:.88rem;margin:6px 0 0}
+.codewrap{position:relative}
+pre{margin:6px 0 0;background:var(--code);border-radius:6px;padding:12px 14px;overflow-x:auto;font-family:var(--m);font-size:.8rem;line-height:1.55}
+.copy{position:absolute;top:6px;right:6px;font:inherit;font-size:.75rem;padding:3px 10px;border-radius:5px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.copy.done{background:var(--accent);color:var(--surface);border-color:var(--accent)}
+.html{overflow-x:auto;margin-top:6px}
+table{border-collapse:collapse;width:100%;font-size:.86rem}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:500;font-size:.78rem}
+code{font-family:var(--m);font-size:.84em;background:var(--code);padding:1px 5px;border-radius:4px}
+kbd{font-family:var(--m);font-size:.78em;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--surface)}
+ul{margin:6px 0;padding-left:20px} li{margin:3px 0}
+mark{background:var(--mark);color:var(--mark-fg);border-radius:2px}
+.empty{color:var(--muted);padding:40px 0;text-align:center}
+.hint{font-size:.78rem;color:var(--muted);margin-top:6px}
+pre code{background:none;padding:0;font-size:inherit}
+@media (max-width:600px){.hint{display:none} nav{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px} nav button{flex:0 0 auto} html{scroll-padding-top:120px}}
+</style>
+</head>
+<body>
+<header><div class="hin">
+  <div class="row">
+    <h1>DL <span>Notes</span></h1>
+    <input id="q" type="search" placeholder="검색: 배치정규화, groupby, nesterov, 조기종료, 에러 …" autocomplete="off" autofocus aria-label="검색">
+    <span id="count"></span>
+  </div>
+  <nav id="nav" aria-label="분류"></nav>
+  <div class="hint"><kbd>/</kbd> 검색창으로 · <kbd>Esc</kbd> 지우기 · 띄어쓰기 상관없이 찾음 · 여러 단어는 모두 포함된 것만</div>
+</div></header>
+<main id="list"></main>
+<script id="data" type="application/json">__DATA__</script>
+<script>
+(function(){
+  var data = JSON.parse(document.getElementById('data').textContent);
+  var S = data.items, SECS = data.sections;
+  var list = document.getElementById('list'), q = document.getElementById('q'),
+      nav = document.getElementById('nav'), count = document.getElementById('count');
+  var current = 'all';
+  function norm(t){ return (t||'').toLowerCase().replace(/[\s·\-_.,/()]+/g,''); }
+  function esc(t){ return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function stripTags(h){ var d=document.createElement('div'); d.innerHTML=h; return d.textContent; }
+  S.forEach(function(s){ s.hay = norm(s.title+' '+s.kw+' '+s.code+' '+s.note+' '+stripTags(s.html||'')); });
+
+  // nav
+  var allBtn = mk('전체','all'); nav.appendChild(allBtn);
+  SECS.forEach(function(p){ nav.appendChild(mk(p[1], p[0])); });
+  function mk(label, key){
+    var b=document.createElement('button'); b.type='button'; b.textContent=label; b.dataset.k=key;
+    b.setAttribute('aria-pressed', key==='all'?'true':'false');
+    b.onclick=function(){ current=key; [].forEach.call(nav.children,function(x){x.setAttribute('aria-pressed', x.dataset.k===key?'true':'false')}); render(); };
+    return b;
+  }
+  function hl(text, toks){
+    var h = esc(text);
+    toks.forEach(function(t){ if(t.length<2) return;
+      var re = new RegExp('('+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
+      h = h.replace(re,'<mark>$1</mark>'); });
+    return h;
+  }
+  function render(){
+    var raw = q.value.trim(), toks = raw.split(/\s+/).filter(Boolean), ntoks = toks.map(norm).filter(Boolean);
+    var shown = S.filter(function(s){
+      if(current!=='all' && s.sec!==current) return false;
+      return ntoks.every(function(t){ return s.hay.indexOf(t)>-1; });
+    });
+    count.textContent = shown.length+'개';
+    list.innerHTML='';
+    if(!shown.length){ list.innerHTML='<div class="empty">찾는 내용이 없습니다. 다른 표현(영문/한글)으로 검색해 보세요.</div>'; return; }
+    var lastSec=null;
+    shown.forEach(function(s){
+      if(s.sec!==lastSec){ var h=document.createElement('div'); h.className='sec'; h.textContent=SECS.filter(function(p){return p[0]===s.sec})[0][1]; list.appendChild(h); lastSec=s.sec; }
+      var c=document.createElement('article'); c.className='card';
+      var secName=SECS.filter(function(p){return p[0]===s.sec})[0][1];
+      var inner='<h2>'+hl(s.title,toks)+'<span class="tag">'+secName+'</span></h2>';
+      if(s.code) inner+='<div class="codewrap"><pre><code>'+hl(s.code,toks)+'</code></pre><button class="copy" type="button">복사</button></div>';
+      if(s.html) inner+='<div class="html">'+s.html+'</div>';
+      if(s.note) inner+='<p class="note">'+hl(s.note,toks)+'</p>';
+      c.innerHTML=inner;
+      var btn=c.querySelector('.copy');
+      if(btn){ btn.onclick=function(){ copy(s.code, btn); }; }
+      list.appendChild(c);
+    });
+  }
+  function copy(text, btn){
+    function ok(){ btn.textContent='복사됨'; btn.classList.add('done'); setTimeout(function(){btn.textContent='복사'; btn.classList.remove('done');},1200); }
+    if(navigator.clipboard && window.isSecureContext){ navigator.clipboard.writeText(text).then(ok, fallback); } else fallback();
+    function fallback(){ var t=document.createElement('textarea'); t.value=text; t.style.position='fixed'; t.style.opacity='0'; document.body.appendChild(t); t.select(); try{document.execCommand('copy'); ok();}catch(e){} document.body.removeChild(t); }
+  }
+  q.addEventListener('input', render);
+  document.addEventListener('keydown', function(e){
+    if(e.key==='/' && document.activeElement!==q){ e.preventDefault(); q.focus(); q.select(); }
+    if(e.key==='Escape'){ q.value=''; render(); q.focus(); }
+  });
+  var m = location.hash.match(/^#q=(.*)$/); if(m){ q.value=decodeURIComponent(m[1]); }
+  render();
+})();
+</script>
+</body>
+</html>
