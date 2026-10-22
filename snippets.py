@@ -2,11 +2,17 @@
 # kw: 검색에 걸릴 다른 표현들 (한글/영문/줄임말)
 
 SECTIONS = [
+    ("concept", "개념 + 예제"),
+    ("change", "바꾸면 이렇게 된다"),
+    ("notebook", "교수님 노트북"),
     ("start", "시작"),
     ("data", "데이터"),
     ("model", "모델 만들기"),
     ("compile", "컴파일·옵티마이저"),
     ("train", "학습·평가"),
+    ("tf", "텐서플로 기초"),
+    ("custom", "사용자 정의"),
+    ("cnn", "CNN"),
     ("pandas", "Pandas"),
     ("numpy", "NumPy 신경망"),
     ("error", "에러 해결"),
@@ -14,8 +20,8 @@ SECTIONS = [
 ]
 
 S = []
-def add(sec, title, kw, code="", note="", html=""):
-    S.append(dict(sec=sec, title=title, kw=kw, code=code.strip("\n"), note=note, html=html))
+def add(sec, title, kw, code="", note="", html="", out=""):
+    S.append(dict(sec=sec, title=title, kw=kw, code=code.strip("\n"), note=note, html=html, out=out))
 
 # ---------------- 시작
 add("start", "import 세트", "임포트 import 라이브러리 시작 tensorflow keras numpy pandas matplotlib",
@@ -513,6 +519,13 @@ html="""<table>
 <tr><td>옵티마이저 관련 <code>Unknown variable</code></td><td>옵티마이저 객체를 모델마다 새로 만들기</td></tr>
 <tr><td>정확도 10% 근처에서 안 오름</td><td>/255 했는지, loss 종류, 출력층 softmax 확인</td></tr>
 <tr><td>학습이 너무 오래 걸림</td><td>epochs 줄이기, <code>verbose=2</code></td></tr>
+<tr><td><code>No module named 'keras.layers.core'</code></td><td><code>from keras.layers import Dense, Dropout, Flatten, Activation</code> (core 빼기)</td></tr>
+<tr><td><code>scipy.ndimage.filters</code> 경고·에러</td><td><code>from scipy.ndimage import convolve</code></td></tr>
+<tr><td>Conv2D <code>expected ndim=4</code></td><td>채널 차원 추가: <code>X[..., np.newaxis]</code> 또는 <code>X.reshape(-1, 28, 28, 1)</code></td></tr>
+<tr><td>불러오기 <code>Could not locate function 'huber_fn'</code></td><td><code>load_model(..., custom_objects={"huber_fn": huber_fn})</code></td></tr>
+<tr><td>GradientTape 결과가 <code>None</code></td><td>변수가 constant → <code>tf.Variable</code>로 만들거나 <code>tape.watch(c)</code></td></tr>
+<tr><td><code>InvalidArgumentError</code> (float32 + int32)</td><td><code>tf.cast(t, tf.float32)</code>로 타입 맞추기</td></tr>
+<tr><td><code>'ResourceVariable' object does not support item assignment</code></td><td><code>v[1] = ...</code> 대신 <code>v[1].assign(...)</code></td></tr>
 <tr><td><code>google.colab</code> 에러</td><td>Colab 전용 코드(손글씨 그리기). 로컬에서는 그 셀 건너뛰기</td></tr>
 </table>""")
 
@@ -556,3 +569,90 @@ html="""<table>
 <tr><td>Adagrad</td><td>빠름</td><td>나쁨 (너무 일찍 멈춤)</td></tr>
 <tr><td>RMSprop / Adam / Nadam</td><td>빠름</td><td>보통~좋음</td></tr>
 </table>""")
+
+
+# ---------------- 5·6·7장 예제
+import snippets_tf as _tf
+_tf.register(add)
+
+# ---------------- Pandas 출력 예시 (Salary2024.csv 실제 실행 결과)
+import json as _json, os as _os
+_P = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "pandas_out.json")
+if _os.path.exists(_P):
+    _o = _json.load(open(_P, encoding="utf-8"))
+    _map = {
+        "데이터 훑어보기": "shape",
+        "항목별 개수 (value_counts)": "vc",
+        "종류 수 · 종류 목록 (nunique / unique)": "nunique",
+        "그룹별 최소·최대·평균 (groupby + agg)": "agg",
+        "그룹 평균 상위 N개": "top5",
+        "조건으로 행 거르기": "filt",
+        "결측치": "null",
+        "피벗 테이블": "pivot",
+    }
+    for _s in S:
+        if _s["title"] in _map:
+            _s["out"] = _o[_map[_s["title"]]]
+
+
+# ---------------- 개념 + 예제 / 바꾸면 이렇게 된다 (맨 앞에 배치)
+import concepts as _c, experiments as _e, re as _re, html as _h
+_R = _e.load(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "results.json"))
+_BY = {x["title"]: x for x in S}
+_NB = {"ch2": ("nb/ch2.html", "2. 케라스 신경망"), "ch3": ("nb/ch3.html", "3. 필기숫자 인식"),
+       "ch4": ("nb/ch4.html", "4. 신경망 요소"), "opt": ("nb/opt.html", "4. Optimizer(NumPy 역전파)"),
+       "ch5": ("nb/ch5.html", "5. 사용자 정의 모델"), "ch6": ("nb/ch6.html", "6. 사용자 정의 모델 2"),
+       "ch7a": ("nb/ch7a.html", "7-1. CNN 컴퓨터 비전"), "ch7b": ("nb/ch7b.html", "7-2. CNN 숫자")}
+_NB_DESC = {"ch2": "10장 · Fashion MNIST 시퀀셜 API, 함수형 API(와이드&딥), 저장·복원, 콜백",
+            "ch3": "10장 복습 + MNIST 필기 숫자 인식, 내 손글씨 인식, 이미지 변환",
+            "ch4": "11장 · 데이터 증강, 초기화, 활성화, 배치 정규화, 옵티마이저, 드롭아웃",
+            "opt": "NumPy로 순전파·손실·역전파·가중치 갱신 직접 구현, sigmoid와 softmax",
+            "ch5": "12장 · 텐서와 연산, 변수, 래그드·희소 텐서, 사용자 정의 손실·함수·지표",
+            "ch6": "12장 · 사용자 정의 층·모델, GradientTape, 사용자 정의 훈련 반복, tf.function",
+            "ch7a": "14장 · 합성곱, Conv2D, 패딩, 풀링, CNN으로 Fashion MNIST",
+            "ch7b": "MLP 복습, 합성곱·풀링 예시, CNN 숫자 인식, MLP vs CNN 비교"}
+def _toc(key):
+    f = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), _NB[key][0])
+    if not _os.path.exists(f): return ""
+    t = open(f, encoding="utf-8").read()
+    rows = []
+    for m in _re.finditer(r'<h([1-4])[^>]*id="([^"]+)"[^>]*>(.*?)</h[1-4]>', t, _re.S):
+        txt = _re.sub(r"<[^>]+>", "", _h.unescape(m.group(3))).replace("¶", "").strip()
+        if not txt or txt in ("설정",) or txt.startswith("**"): continue
+        lvl = int(m.group(1))
+        rows.append(f'<li style="margin-left:{(lvl-1)*14}px"><a href="{_NB[key][0]}#{m.group(2)}" target="_blank" rel="noopener">{_h.escape(txt)}</a></li>')
+    return '<ul style="list-style:none;padding-left:0;columns:2;column-gap:24px">' + "".join(rows) + '</ul>'
+
+def _anchor(key, heading):
+    f = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), _NB[key][0])
+    if not _os.path.exists(f): return None
+    t = open(f, encoding="utf-8").read()
+    for m in _re.finditer(r'<h[1-4][^>]*id="([^"]+)"[^>]*>(.*?)</h[1-4]>', t, _re.S):
+        txt = _re.sub(r"<[^>]+>", "", _h.unescape(m.group(2))).replace("¶", "").strip()
+        if txt == heading or txt.startswith(heading):
+            return _NB[key][0] + "#" + m.group(1)
+    return _NB[key][0]
+_front = []
+for _it in _c.concept_items():
+    L = _c.LINK.get(_it["title"], {})
+    _it["code"] = "\n\n".join(f"# ── {t}\n" + _BY[t]["code"] for t in L.get("ex", []) if t in _BY and _BY[t]["code"])
+    ex = ""
+    for g in L.get("exp", []):
+        ex += _e.group_html(g, _R)
+    links = []
+    for key, head in L.get("nb", []):
+        a = _anchor(key, head)
+        if a: links.append(f'<a href="{a}" target="_blank" rel="noopener">교수님 노트북 · {_NB[key][1]} › {head}</a>')
+    if links: ex += '<div class="nblinks">' + "".join(links) + '</div>'
+    _it["extra"] = ex
+    _front.append(_it)
+_front.append(_c.read_item())
+_nbitems = []
+for _k, (_path, _name) in _NB.items():
+    _t = _toc(_k)
+    if not _t: continue
+    _nbitems.append(dict(sec="notebook", title=f"교수님 노트북 · {_name}", kw="교수님 노트북 원본 강의 예제 " + _NB_DESC[_k],
+        code="", note="", out="", extra="",
+        html=f'<p>{_NB_DESC[_k]}</p><p><a href="{_path}" target="_blank" rel="noopener"><b>노트북 전체 열기 →</b></a></p>' + _t))
+for _x in S: _x.setdefault("extra", "")
+S[:0] = _front + _e.items(_R) + _nbitems
