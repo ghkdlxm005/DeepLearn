@@ -674,6 +674,8 @@ def _anchor(key, heading):
     return _NB[key][0]
 import snippets_study as _study
 _study.register(add, lambda k, h: _anchor(k, h) or '#')
+import snippets_adapt as _adapt
+_adapt.register(add)
 _front = []
 for _it in _c.concept_items():
     L = _c.LINK.get(_it["title"], {})
