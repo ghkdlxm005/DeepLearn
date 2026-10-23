@@ -13,7 +13,7 @@ def _sec(title, body):
     return f"<h3 class=\"pq\">{title}</h3>{body}"
 
 
-def register(add, nb):
+def register(add, nb, after_intro=None):
     def L(key, heading, label=None):
         return f'<a href="{nb(key, heading)}" target="_blank">{label or heading}</a>'
 
@@ -44,6 +44,8 @@ html=_sec("순서", """<ol>
 <li>에러 메시지 일부를 친다: {_q('incompatible')}, {_q('item assignment')}</li>
 <li>띄어쓰기·대소문자는 상관없음, 여러 단어는 모두 들어간 것만 나옴</li>
 </ul>"""))
+
+    if after_intro: after_intro(add)
 
     # ================================================================== 1
     card("1. 큰 그림: 신경망은 어떻게 배우나 (순전파 → 손실 → 역전파 → 옵티마이저)", "큰 그림 학습 과정 순전파 손실 역전파 옵티마이저 경사하강 가중치 편향 활성화 epoch batch",

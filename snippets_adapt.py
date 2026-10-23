@@ -221,3 +221,67 @@ html="""<table>
 <tr><td>확률로 직접 계산</td><td><code>sklearn.metrics.log_loss(y, 예측확률)</code></td><td>= 교차 엔트로피 (evaluate의 loss와 거의 같음)</td></tr>
 </table>
 <p>작년 시험 형식(GridSearchCV 결과표, 최적 조합 재학습, ROC·AUC, plotROC)은 "빈칸 채우기"와 "튜닝·평가" 분류에 있음: <a href="#q=plotROC">plotROC</a> · <a href="#q=cv_results_">cv_results_</a> · <a href="#q=roc auc">ROC·AUC</a></p>""")
+
+
+def _rows(rows):
+    return "<table><tr><th>문제에 이런 말이 있으면</th><th>검색어</th></tr>" + "".join(
+        f'<tr><td>{a}</td><td>{" · ".join(chr(60)+"a href=\"#q="+w+"\">"+w+chr(60)+"/a>" for w in b)}</td></tr>' for a, b in rows) + "</table>"
+
+
+def register_keywords(add):
+    add("study", "검색어 사전: 시험 문제 문장 → 무엇을 칠까", "검색어 사전 키워드 찾기 검색 요령 시험 중 무엇을 검색",
+html="<p>가장 빠르고 정확한 방법: <b>문제에 나온 함수 이름·영어 용어를 그대로</b> 친다. 한글 개념어는 결과가 많고, 함수 이름은 딱 그 카드가 나온다. 아래 검색어는 누르면 바로 검색된다.</p>"
++ "<h3 class=\"pq\">Pandas</h3>" + _rows([
+    ("~별로 몇 개 / 몇 명", ["value_counts"]),
+    ("종류가 몇 개", ["nunique"]),
+    ("~별 최소·최대·평균", ["groupby agg"]),
+    ("~년도만, ~인 것만", ["조건으로 거르기"]),
+    ("높은 순, 상위 10개", ["상위", "정렬"]),
+    ("~별·~별 표", ["피벗"]),
+    ("다른 데이터라 헷갈림", ["데이터 바꿔 끼우기"]),
+])
++ "<h3 class=\"pq\">모델 만들기 (사양 목록)</h3>" + _rows([
+    ("사양 전체가 Week4와 비슷", ["Week4"]),
+    ("He 초기화", ["he_normal"]),
+    ("ELU / SELU / LeakyReLU", ["ELU SELU", "LeakyReLU"]),
+    ("NAG, 모멘텀", ["nesterov"]),
+    ("배치 정규화", ["BatchNormalization"]),
+    ("드롭아웃", ["Dropout"]),
+    ("조기 종료, 최고 모델 저장", ["EarlyStopping", "ModelCheckpoint"]),
+    ("CNN, 합성곱", ["Conv2D"]),
+    ("정확도 출력", ["evaluate", "accuracy_score"]),
+    ("loss, 학습 곡선", ["학습 곡선", "loss 확인"]),
+    ("옵티마이저 비교", ["옵티마이저만 바꿔 비교"]),
+])
++ "<h3 class=\"pq\">5·6장 (사용자 정의)</h3>" + _rows([
+    ("후버 손실, 손실 클래스", ["HuberLoss"]),
+    ("저장한 모델 불러오기", ["custom_objects"]),
+    ("사용자 정의 층", ["MyDense"]),
+    ("미분, 기울기", ["GradientTape"]),
+    ("훈련 반복 직접", ["사용자 정의 훈련 반복"]),
+    ("그래프 함수, 데코레이터", ["tf.function"]),
+    ("텐서 타입·변수·희소", ["cast", "assign", "reorder"]),
+])
++ "<h3 class=\"pq\">작년 시험 형식 · 평가</h3>" + _rows([
+    ("ROC 그리기", ["plotROC"]),
+    ("AUC", ["roc auc"]),
+    ("그리드 탐색 결과", ["cv_results_"]),
+    ("최적 조합으로 다시 학습", ["best_params_"]),
+    ("정밀도·재현율·F1", ["classification_report"]),
+    ("혼동 행렬", ["confusion_matrix"]),
+])
++ "<h3 class=\"pq\">에러 고치기</h3>" + _rows([
+    ("에러 메시지에 이런 단어", ["incompatible", "item assignment", "keras.layers.core", "reorder", "extension"]),
+    ("모르는 에러", ["자주 나는 에러", "노트북 에러 한눈에"]),
+])
++ "<h3 class=\"pq\">서술형</h3>" + _rows([
+    ("왜 / 설명하시오 전반", ["질문 답 전체"]),
+    ("개념 하나 (뜻·비유)", ["기울기 소실", "과대적합", "배치 정규화"]),
+    ("파라미터 수 계산", ["파라미터 개수"]),
+    ("에러 원인 문장 쓰는 법", ["6주차 형식"]),
+])
++ """<h3 class="pq">요령</h3><ol>
+<li><b>두 단어</b>를 치면 좁혀진다: <a href="#q=Dropout Week4">Dropout Week4</a></li>
+<li>결과가 많으면 위쪽 <b>분류 버튼</b>: 코드는 "과제 변형 연습", 설명은 "교수님 강조"·"개념 + 예제"</li>
+<li><code>/</code> 키 = 검색창, <code>Esc</code> = 지우기. <code>elu</code>처럼 짧은 말은 relu까지 걸리니 두 단어로</li>
+<li>코드는 보고 <b>직접 치고</b>, 서술은 이해한 뒤 <b>자기 말로</b> (복사·붙여 넣기 금지 규칙)</li></ol>""")

@@ -672,9 +672,8 @@ def _anchor(key, heading):
         if txt == heading or txt.startswith(heading):
             return _NB[key][0] + "#" + m.group(1)
     return _NB[key][0]
-import snippets_study as _study
-_study.register(add, lambda k, h: _anchor(k, h) or '#')
-import snippets_adapt as _adapt
+import snippets_study as _study, snippets_adapt as _adapt
+_study.register(add, lambda k, h: _anchor(k, h) or '#', after_intro=_adapt.register_keywords)
 _adapt.register(add)
 _front = []
 for _it in _c.concept_items():
