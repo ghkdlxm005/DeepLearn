@@ -143,7 +143,7 @@ pre.out{margin-top:2px;background:transparent;border:1px dashed var(--line)}
       var secName=SECS.filter(function(p){return p[0]===s.sec})[0][1];
       var inner='<h2>'+hl(s.title,toks)+'<span class="tag">'+secName+'</span></h2>';
       var codeBlock = s.code ? '<div class="codewrap"><pre><code>'+hl(s.code,toks)+'</code></pre><button class="copy" type="button">복사</button></div>' : '';
-      if((s.sec==='concept'||s.sec==='lecture'||s.sec==='practice'||s.sec==='nberr') && s.html && s.code){
+      if((s.sec==='concept'||s.sec==='lecture'||s.sec==='practice'||s.sec==='nberr'||s.sec==='study') && s.html && s.code){
         inner+='<div class="duo"><div class="html concept">'+s.html+'</div><div class="ex"><div class="outlbl">예제</div>'+codeBlock+'</div></div>';
       } else {
         inner+=codeBlock;
@@ -176,6 +176,10 @@ pre.out{margin-top:2px;background:transparent;border:1px dashed var(--line)}
   });
   var m = location.hash.match(/^#q=(.*)$/); if(m){ q.value=decodeURIComponent(m[1]); }
   render();
+  window.addEventListener('hashchange', function(){
+    var h = location.hash.match(/^#q=(.*)$/); if(!h) return;
+    q.value = decodeURIComponent(h[1]); render(); window.scrollTo(0, 0);
+  });
 })();
 </script>
 </body>

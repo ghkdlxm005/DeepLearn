@@ -2,6 +2,7 @@
 # kw: 검색에 걸릴 다른 표현들 (한글/영문/줄임말)
 
 SECTIONS = [
+    ("study", "공부 순서 (장별 해설)"),
     ("concept", "개념 + 예제"),
     ("lecture", "교수님 강조"),
     ("practice", "과제 변형 연습"),
@@ -606,6 +607,7 @@ import snippets_nberr as _nberr
 _nberr.register(add)
 import snippets_hw as _hw
 _hw.register_head(add)
+_hw.register_pandas_ca(add)
 _hw.register_pandas(add)
 import snippets_practice as _prac, json as _pj, os as _po
 _PR = _po.path.join(_po.path.dirname(_po.path.abspath(__file__)), "practice_results.json")
@@ -670,6 +672,8 @@ def _anchor(key, heading):
         if txt == heading or txt.startswith(heading):
             return _NB[key][0] + "#" + m.group(1)
     return _NB[key][0]
+import snippets_study as _study
+_study.register(add, lambda k, h: _anchor(k, h) or '#')
 _front = []
 for _it in _c.concept_items():
     L = _c.LINK.get(_it["title"], {})

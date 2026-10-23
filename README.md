@@ -6,6 +6,7 @@
 
 | 파일 | 역할 |
 |---|---|
+| `snippets_study.py` | 공부 순서(장별 해설): 공부법, 큰 그림, 2~7장 해설(노트북 위치 링크·코드·점검 질문), 시험 당일 순서, 데이터 증강, L1·L2 |
 | `snippets.py` | 내용 원본 (제목, 검색 키워드, 코드, 설명) — 2·3·4장 범위 |
 | `snippets_tf.py` | 5·6장(텐서플로 저수준·사용자 정의), 7장(CNN) 예제 |
 | `snippets_eval.py` | 하이퍼파라미터 탐색(그리드·Keras Tuner·GridSearchCV), 혼동 행렬·F1·ROC/AUC |

@@ -131,3 +131,49 @@ html=_tbl([
  ("keras.layers.MaxPool2D", "칸 안의 최댓값만 남겨 크기를 줄이는 층(파라미터 0)"),
  ("DepthMaxPool", "채널(깊이) 방향으로 최댓값 풀링하는 사용자 정의 층"),
 ]))
+
+
+CA_CODE = '''from sklearn.datasets import fetch_california_housing
+import pandas as pd
+import matplotlib.pyplot as plt
+
+housing = fetch_california_housing(as_frame=True)
+df = housing.frame                    # 표(DataFrame)로 받기
+print(df.shape)                       # (20640, 9)
+print(df.head())
+# 열: MedInc(중간 소득, 만 달러) HouseAge(주택 연식) AveRooms(평균 방 수) AveBedrms(평균 침실 수)
+#     Population(인구) AveOccup(평균 거주 인원) Latitude(위도) Longitude(경도) MedHouseVal(집값, 10만 달러)
+
+#1. HouseAge(주택 연식)별로 몇 개의 데이터가 있는지 상위 5개
+print(df['HouseAge'].value_counts().head())
+
+#2. HouseAge 종류 수
+print(df['HouseAge'].nunique())
+
+#3. HouseAge별 집값(MedHouseVal)의 최소, 최대, 평균
+print(df.groupby('HouseAge')['MedHouseVal'].agg(['min', 'max', 'mean']).head())
+
+#4. 소득(MedInc)이 8 이상인 지역의 평균 집값
+print(df[df['MedInc'] >= 8]['MedHouseVal'].mean())
+
+#5. 집값이 가장 비싼 10개 지역
+print(df.sort_values('MedHouseVal', ascending=False).head(10))
+
+#6. 소득을 구간으로 나눠 구간별 평균 집값 (pd.cut)
+df['income_cat'] = pd.cut(df['MedInc'], bins=[0, 1.5, 3, 4.5, 6, float('inf')], labels=[1, 2, 3, 4, 5])
+print(df.groupby('income_cat', observed=True)['MedHouseVal'].mean())
+
+#7. 열 사이의 상관관계: 집값과 가장 관련 있는 열
+print(df.drop(columns='income_cat').corr()['MedHouseVal'].sort_values(ascending=False))
+
+#8. 교수님이 그린 캘리포니아 지도 (색 = 집값). c='MedInc'로 바꾸면 소득 지도
+df.plot(kind="scatter", x="Longitude", y="Latitude", alpha=0.4,
+        s=df["Population"] / 100, c="MedHouseVal", cmap="jet", colorbar=True, figsize=(10, 7))
+plt.show()'''
+
+
+def register_pandas_ca(add):
+    add("pandas", "캘리포니아 집값 데이터를 Pandas 표로 (Salary2024 말고 나올 만한 표 데이터)",
+        "캘리포니아 집값 california housing fetch_california_housing as_frame dataframe pandas 부동산 지도 scatter latitude longitude MedInc MedHouseVal corr 상관관계 pd.cut",
+        code=CA_CODE,
+        note="2·5·6장에서 쓴 캘리포니아 데이터. as_frame=True로 받으면 Salary2024와 같은 함수로 집계 가능. 10/10 교수님: '평균 소득 말고 다른 걸로 플로팅해 보세요'. 처음 보는 CSV도 순서는 같음: head()·info()로 열 이름 확인 → '~별로'=groupby, '몇 개'=value_counts, '종류 수'=nunique, '~인 것만'=df[조건], '높은 순'=sort_values.")
